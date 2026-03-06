@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        {% if ticket %}
+        <h2 class="card-title text-success mb-3">Vehicle Parked Successfully</h2>
+        <p class="mb-1"><strong>Vehicle Number:</strong> {{ ticket.vehicle.number }}</p>
+        <p class="mb-1"><strong>Floor:</strong> {{ ticket.floor_no }}</p>
+        <p class="mb-3"><strong>Slot:</strong> {{ ticket.slot.slot_id }}</p>
+        {% else %}
+        <h2 class="card-title text-danger mb-3">Unable to Park</h2>
+        <p class="mb-3">{{ error or "Parking is full." }}</p>
+        {% endif %}
+
+        <a href="/park" class="btn btn-primary me-2">Park Another Vehicle</a>
+        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+{% endblock %}
+

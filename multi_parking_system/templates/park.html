@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title mb-4">Park Vehicle</h2>
+        <form method="post">
+          <div class="mb-3">
+            <label for="vehicle_number" class="form-label">Vehicle Number</label>
+            <input
+              type="text"
+              id="vehicle_number"
+              name="vehicle_number"
+              class="form-control"
+              placeholder="e.g. KA01AB1234"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="vehicle_type" class="form-label">Vehicle Type</label>
+            <select id="vehicle_type" name="vehicle_type" class="form-select">
+              <option value="CAR">Car</option>
+              <option value="BIKE">Bike</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Park</button>
+          <a href="/" class="btn btn-link">Back to Home</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

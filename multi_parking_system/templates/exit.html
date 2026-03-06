@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title mb-4">Exit Vehicle</h2>
+        <form method="post">
+          <div class="mb-3">
+            <label for="vehicle_number" class="form-label">Vehicle Number</label>
+            <input
+              type="text"
+              id="vehicle_number"
+              name="vehicle_number"
+              class="form-control"
+              placeholder="e.g. KA01AB1234"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Exit</button>
+          <a href="/" class="btn btn-link">Back to Home</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

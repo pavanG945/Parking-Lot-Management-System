@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+  <div class="col-lg-10">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+      <div>
+        <h1 class="mb-1">Parking Analytics Dashboard</h1>
+        <p class="text-muted mb-0">
+          Live overview of occupancy, capacity and revenue across all floors.
+        </p>
+      </div>
+      <span class="badge bg-info text-dark mt-3 mt-md-0">
+        Time-based pricing · Multi-floor
+      </span>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <p class="text-muted mb-1">Total Slots</p>
+            <h3 class="mb-0">{{ summary.total_slots }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <p class="text-muted mb-1">Occupied</p>
+            <h3 class="mb-0 text-warning">{{ summary.total_occupied }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <p class="text-muted mb-1">Free Slots</p>
+            <h3 class="mb-0 text-success">{{ summary.total_free }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <p class="text-muted mb-1">Total Revenue (₹)</p>
+            <h3 class="mb-0 text-info">{{ summary.total_revenue }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h6 class="text-muted text-uppercase mb-2">Car Capacity & Occupancy</h6>
+            <p class="mb-1">
+              <strong>Slots:</strong> {{ summary.car.slots }}
+              · <strong>Occupied:</strong> {{ summary.car.occupied }}
+              · <strong>Free:</strong> {{ summary.car.free }}
+            </p>
+            <p class="small text-muted mb-0">
+              Cars are bigger, so in many layouts we keep <strong>fewer</strong> car slots than bike slots.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h6 class="text-muted text-uppercase mb-2">Bike Capacity & Occupancy</h6>
+            <p class="mb-1">
+              <strong>Slots:</strong> {{ summary.bike.slots }}
+              · <strong>Occupied:</strong> {{ summary.bike.occupied }}
+              · <strong>Free:</strong> {{ summary.bike.free }}
+            </p>
+            <p class="small text-muted mb-0">
+              Configure setup so bike slots are roughly <strong>2×</strong> car slots to highlight smaller vehicle size and higher bike density.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0">Per-floor Utilization</h5>
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex flex-column text-end">
+              <span class="text-muted small">
+                Vehicles served so far: {{ summary.total_vehicles_served }}
+              </span>
+              <span class="text-muted small">
+                Last reset:
+                {{ last_reset_time or "Not reset yet" }}
+              </span>
+            </div>
+            <form method="post" action="/reset" onsubmit="return confirm('This will clear all configuration and tickets. Continue?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                Reset System
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-dark table-striped align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Floor</th>
+                <th scope="col">Total Slots</th>
+                <th scope="col">Occupied</th>
+                <th scope="col">Free</th>
+                <th scope="col">Occupancy</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for floor in summary.floors %}
+              <tr>
+                <td>#{{ floor.floor_no }}</td>
+                <td>{{ floor.total_slots }}</td>
+                <td class="text-warning">{{ floor.occupied }}</td>
+                <td class="text-success">{{ floor.free }}</td>
+                <td style="min-width: 180px;">
+                  <div class="progress" style="height: 0.75rem;">
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      style="width: {{ floor.occupancy_percent }}%;"
+                      aria-valuenow="{{ floor.occupancy_percent }}"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      {{ floor.occupancy_percent }}%
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

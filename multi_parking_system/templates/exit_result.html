@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        {% if ticket %}
+        <h2 class="card-title text-success mb-3">Vehicle Exited Successfully</h2>
+        <p class="mb-1"><strong>Vehicle Number:</strong> {{ ticket.vehicle.number }}</p>
+        <p class="mb-1"><strong>Floor:</strong> {{ ticket.floor_no }}</p>
+        <p class="mb-1"><strong>Slot:</strong> {{ ticket.slot.slot_id }}</p>
+        <hr />
+        <p class="mb-1"><strong>Duration:</strong> {{ duration }}</p>
+        <p class="mb-1">
+          <strong>Rate:</strong> ₹{{ rate_per_hour }}/hour
+          <span class="text-muted">(first 15 minutes free, then per minute)</span>
+        </p>
+        <p class="mb-3"><strong>Total Fee:</strong> ₹{{ fee }}</p>
+        {% else %}
+        <h2 class="card-title text-danger mb-3">Unable to Exit</h2>
+        <p class="mb-3">{{ error or "Invalid vehicle number." }}</p>
+        {% endif %}
+
+        <a href="/exit" class="btn btn-primary me-2">Exit Another Vehicle</a>
+        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
